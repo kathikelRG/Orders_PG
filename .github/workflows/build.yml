@@ -1,0 +1,136 @@
+# This is a basic workflow to help you get started with Actions
+ 
+name: deployToProduction_GitHub_Hosted
+ 
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+ 
+env:
+ 
+  #Repository Secret - Create this within the Projects Settings > Secrects > Actions section
+  # Enable this for additional debug logging
+  ACTIONS_RUNNER_DEBUG: true 
+ 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains three jobs, build test and prod
+  build:
+    name: Deploy Build
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: 'build' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
+    env:
+      userName: ${{ secrets.USERNAME }}
+      password: ${{ secrets.PASSWORD }}
+      
+      # Environment Secrets - Ensure all of the below have been created as an Environment Secret (Projects Settings > Secrets > Actions section, specially related to the environment in question) #
+      JDBC: ${{ vars.JDBC_URL }}
+      displayName: 'Build'
+      executeBuild: true
+      publishArtifacts: true
+ 
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+     
+      - name: Install Flyway
+        run: "wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/10.10.0/flyway-commandline-10.10.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.10.0/flyway /usr/local/bin"
+                       
+      - name: Version
+        run: flyway -v
+
+      # Runs the Flyway Clean command against the Build database
+      - name: Clean Build DB
+        if: env.executeBuild == 'true'
+        run: |
+         flyway -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info clean info -url="${{ env.JDBC }}" -cleanDisabled="false"
+      
+        # Runs the Flyway Migrate command against the Build database
+      - name: Migrate Build DB
+        if: env.executeBuild == 'true'
+        run: |
+         flyway -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info migrate info -url="${{ env.JDBC }}" -cleanDisabled="false"
+     
+       # Create a directory to stage the artifact files
+      - name: Stage files for publishing
+        if: env.publishArtifacts == 'true'
+        run: |
+         cp -R ${{ GITHUB.WORKSPACE }}/migrations ${{ GITHUB.WORKSPACE }}/Artifact_Files/
+
+     
+     #After migration scripts are validated, publish them as an artifact
+      - name: Publish Validated Migration Scripts as Artifact
+        if: env.publishArtifacts == 'true'
+        uses: actions/upload-artifact@v3
+        with: 
+         name: flyway-build-artifact
+         path: ${{ GITHUB.WORKSPACE }}/Artifact_Files/
+ 
+     # This workflow contains three jobs, build test and prod"
+#   test:
+#     name: Deploy test
+#     # The type of runner that the job will run on
+#     runs-on: ubuntu-latest
+#     environment: 'test' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
+#     needs: build
+#     env:
+#         userName: ${{ secrets.USERNAME }}
+#         password: ${{ secrets.PASSWORD }}
+#         JDBC: ${{ vars.JDBC_URL }}
+#         displayName: 'Test'
+#         executeBuild: true
+    
+#     # Steps represent a sequence of tasks that will be executed as part of the job
+#     steps:
+#         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#         - uses: actions/checkout@v3
+#         - name: Install Flyway
+#           run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.10.0/flyway-commandline-10.10.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.10.0/flyway /usr/local/bin"
+
+#         #- name: show contents
+#         #  run: ls ${{ GITHUB.WORKSPACE }}
+#         - name: Version
+#           run: flyway -v
+
+#         # Runs the Flyway Migrate command against the Test database
+#         - name: Migrate Test DB
+#           if: env.executeBuild == 'true'
+#           run: |
+#             flyway -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info migrate info -url="${{ env.JDBC }}" -cleanDisabled="false"
+    
+# # This workflow contains three jobs, build test and prod"
+#   prod:
+#     name: Deploy Production
+#     # The type of runner that the job will run on
+#     runs-on: ubuntu-latest
+#     environment: 'prod' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
+#     needs: test
+#     env:
+#         userName: ${{ secrets.USERNAME }}
+#         password: ${{ secrets.PASSWORD }}
+#         JDBC: ${{ vars.JDBC_URL }}
+#         displayName: 'Production'
+#         executeBuild: true
+    
+#     # Steps represent a sequence of tasks that will be executed as part of the job
+#     steps:
+#         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#         - uses: actions/checkout@v3
+#         - name: Install Flyway
+#           run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.10.0/flyway-commandline-10.10.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.10.0/flyway /usr/local/bin"
+
+#         - name: Version
+#           run: flyway -v
+
+#         # Runs the Flyway Migrate command against the Test database
+#         - name: Migrate Test DB
+#           if: env.executeBuild == 'true'
+#           run: |
+#             flyway -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info migrate info -url="${{ env.JDBC }}" -cleanDisabled="false"
+        
+
+    
+            
