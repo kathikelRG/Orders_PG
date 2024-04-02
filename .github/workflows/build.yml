@@ -49,7 +49,6 @@ jobs:
         run: |
          flyway -user="${{ env.userName }}" 
           -password="${{ env.password }}" 
-          -license="${{ env.license }}" 
           -baselineOnMigrate="true"   
           -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info clean info
           -url="${{ env.JDBC }}" -cleanDisabled="false"
@@ -60,7 +59,7 @@ jobs:
 
         run: |
          flyway -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info migrate info -url="${{ env.JDBC }}" -cleanDisabled="false"
-         env:
+    
 
 
        # Create a directory to stage the artifact files
