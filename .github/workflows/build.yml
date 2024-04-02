@@ -11,7 +11,7 @@ env:
   #Repository Secret - Create this within the Projects Settings > Secrects > Actions section
   # Enable this for additional debug logging
   ACTIONS_RUNNER_DEBUG: true 
-  license: ${{ secrets.FLWYAY_LICENSE_KEY }}
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains three jobs, build test and prod
@@ -47,13 +47,16 @@ jobs:
         if: env.executeBuild == 'true'
         run: |
          flyway -user="${{ env.userName }}" -password="${{ env.password }}" -license="${{ env.license }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info clean info -url="${{ env.JDBC }}" -cleanDisabled="false"
-      
+         env:
+          license: ${{ secrets.FLYWAY_LICENSE_KEY }}
         # Runs the Flyway Migrate command against the Build database
       - name: Migrate Build DB
         if: env.executeBuild == 'true'
         run: |
          flyway -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info migrate info -url="${{ env.JDBC }}" -cleanDisabled="false"
-     
+         env:
+          license: ${{ secrets. }}
+          
        # Create a directory to stage the artifact files
       - name: Stage files for publishing
         if: env.publishArtifacts == 'true'
