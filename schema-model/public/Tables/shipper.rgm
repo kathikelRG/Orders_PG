@@ -1,0 +1,22 @@
+table "public"."shipper" {
+  primaryKey = {
+    columns = [
+      "shipperID"
+      "shipperName"
+    ]
+    name = "shipper_pkey"
+    objectType = primaryKey
+  }
+  owner = postgres
+  columns = (
+    column "shipperID" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "shipperName" {
+      type = character varying
+      null = NOT NULL
+    }
+  )
+}
+

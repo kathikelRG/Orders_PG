@@ -1,0 +1,25 @@
+table "public"."product" {
+  primaryKey = {
+    columns = [
+      "productID"
+    ]
+    name = "product_pkey"
+    objectType = primaryKey
+  }
+  owner = postgres
+  columns = (
+    column "productID" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "productName" {
+      type = character varying
+      null = NOT NULL
+    }
+    column "unitPrice" {
+      type = money
+      null = NOT NULL
+    }
+  )
+}
+

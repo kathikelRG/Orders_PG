@@ -1,0 +1,27 @@
+table "public"."customer" {
+  primaryKey = {
+    columns = [
+      "customerID"
+    ]
+    name = "customer_pkey"
+    objectType = primaryKey
+  }
+  owner = postgres
+  columns = (
+    column "customerID" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "customerName" {
+      type = character varying
+      null = NOT NULL
+    }
+    column "address" {
+      type = character varying
+    }
+    column "note" {
+      type = character varying
+    }
+  )
+}
+

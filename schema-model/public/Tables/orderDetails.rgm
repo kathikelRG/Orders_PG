@@ -1,0 +1,34 @@
+table "public"."orderDetails" {
+  primaryKey = {
+    columns = [
+      "orderID"
+      "orderDetailID"
+    ]
+    name = "orderDetails_pkey"
+    objectType = primaryKey
+  }
+  owner = postgres
+  columns = (
+    column "orderID" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "orderDetailID" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "productID" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "quantity" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "itemPrice" {
+      type = money
+      null = NOT NULL
+    }
+  )
+}
+
