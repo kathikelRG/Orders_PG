@@ -7,12 +7,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
  
-env:
- 
+env: 
   #Repository Secret - Create this within the Projects Settings > Secrects > Actions section
   # Enable this for additional debug logging
   ACTIONS_RUNNER_DEBUG: true 
- 
+  license: ${{ secrets.FLWYAY_LICENSE_KEY }}
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains three jobs, build test and prod
@@ -27,7 +26,7 @@ jobs:
       
       # Environment Secrets - Ensure all of the below have been created as an Environment Secret (Projects Settings > Secrets > Actions section, specially related to the environment in question) #
       JDBC: ${{ vars.JDBC_URL }}
-      license: ${{ secrets.FLWYAY_LICENSE_KEY }}
+      
       displayName: 'Build'
       executeBuild: true
       publishArtifacts: true
