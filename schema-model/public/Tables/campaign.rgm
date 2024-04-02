@@ -1,0 +1,24 @@
+table "public"."campaign" {
+  primaryKey = {
+    columns = [
+      "campaignID"
+    ]
+    name = "campaign_pkey"
+    objectType = primaryKey
+  }
+  owner = postgres
+  columns = (
+    column "campaignID" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "campaignName" {
+      type = character varying
+      null = NOT NULL
+    }
+    column "campaignDesc" {
+      type = character varying
+    }
+  )
+}
+
