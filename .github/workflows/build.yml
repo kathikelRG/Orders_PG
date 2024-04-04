@@ -75,7 +75,7 @@ jobs:
  
      # This workflow contains three jobs, build test and prod"
   test:
-    name: Deploy test
+    name: Deploy Test
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: 'test' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
@@ -105,7 +105,7 @@ jobs:
         #reports
         - name: Check reports
           run: |
-            flyway check -changes -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}"
+            flyway check -changes -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.userName }}" -check.buildPassword="${{ env.password }}"
 
         # Runs the Flyway Migrate command against the Test database
         - name: Migrate Test DB
