@@ -148,14 +148,27 @@ jobs:
           - name: Check reports
             run: |
               flyway check -changes -drift -code -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFilename="prodstage_report.html"
-          
-        # Runs the Flyway Migrate command against the Test database
-          - name: Migrate Prod DB
-            run: |
-              flyway info migrate info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
-              
           - name: Publish Report as Artifact
             uses: actions/upload-artifact@v4
             with: 
               name: Check Report Prod
-              path: ${{ GITHUB.WORKSPACE }}/prodstage_report.html
+              path: ${{ GITHUB.WORKSPACE }}/prodstage_report.html         
+        
+          - uses: trstringer/manual-approval@v1
+            with:
+              secret: ${{ github.token }}
+              approvers: kathikelrg
+              minimum-approvals: 1
+              issue-title: "Deploying  to prod "
+              issue-body: "Please review change report."
+              exclude-workflow-initiator-as-approver: false
+              additional-approved-words: ''
+              additional-denied-words: ''
+
+          
+        
+          # Runs the Flyway Migrate command against the prod database
+          - name: Migrate Prod DB
+            run: |
+              flyway info migrate info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
+              
