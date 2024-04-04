@@ -105,7 +105,7 @@ jobs:
         #reports
         - name: Check reports
           run: |
-            flyway check -changes -drift -code -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFileName="teststage_report.html"
+            flyway check -changes -drift -code -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFilename="teststage_report.html"
 
         # Runs the Flyway Migrate command against the Test database
         - name: Migrate Test DB
@@ -123,7 +123,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: 'Prod' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
-    needs: build
+    needs: test
     env:
         userName: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
@@ -147,7 +147,7 @@ jobs:
         #reports
           - name: Check reports
             run: |
-              flyway check -changes -drift -code -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFileName="testprod_report.html"
+              flyway check -changes -drift -code -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFilename="testprod_report.html"
           
         # Runs the Flyway Migrate command against the Test database
           - name: Migrate Prod DB
