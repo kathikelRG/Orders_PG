@@ -119,7 +119,7 @@ jobs:
             path: ${{ GITHUB.WORKSPACE }}/teststage_report.html
 
   prod:
-    name: Deploy Prod
+    name: Change Report Prod
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     environment: 'Prod' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
@@ -131,7 +131,7 @@ jobs:
         CHECK_JDBC: ${{ vars.CHECK_JDBC }}
         CHECK_USER: ${{ secrets.CHECK_USERNAME }}
         CHECK_PASSWORD: ${{ secrets.CHECK_PASSWORD }}
-        displayName: 'Prod'
+        displayName: 'Prod Check Report'
         executeBuild: true
               
       # Steps represent a sequence of tasks that will be executed as part of the job
@@ -154,21 +154,34 @@ jobs:
               name: Check Report Prod
               path: ${{ GITHUB.WORKSPACE }}/prodstage_report.html         
         
-          - uses: trstringer/manual-approval@v1
-            with:
-              secret: ${{ github.token }}
-              approvers: kathikelrg
-              minimum-approvals: 1
-              issue-title: "Deploying  to prod "
-              issue-body: "Please review change report."
-              exclude-workflow-initiator-as-approver: false
-              additional-approved-words: ''
-              additional-denied-words: ''
-
-          
+       
         
-          # Runs the Flyway Migrate command against the prod database
-          - name: Migrate Prod DB
-            run: |
+    
+  prod_Deploy:
+    name: Deploy Prod
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: 'Prod_Deploy' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
+    needs: prod
+    env:
+      userName: ${{ secrets.USERNAME }}
+      password: ${{ secrets.PASSWORD }}
+      JDBC: ${{ vars.JDBC_URL }}
+      displayName: 'Deploy to Prod'
+                  
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v4
+        - name: Install Flyway
+          run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.10.0/flyway-commandline-10.10.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.10.0/flyway /usr/local/bin"
+                      
+        - name: Version
+          run: flyway -v -licenseKey="${{ env.FW_LICENSE }}"
+
+
+                              # Runs the Flyway Migrate command against the prod database
+        - name: Migrate Prod DB
+          run: |
               flyway info migrate info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
-              
+            
