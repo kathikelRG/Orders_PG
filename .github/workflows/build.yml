@@ -103,7 +103,7 @@ jobs:
         - name: Migrate Test DB
           if: env.executeBuild == 'true'
           run: |
-            flyway info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" 
+            flyway info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
     
 # # This workflow contains three jobs, build test and prod"
 #   prod:
