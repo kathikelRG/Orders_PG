@@ -125,37 +125,37 @@ jobs:
     environment: 'Prod' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
     needs: build
     env:
-      userName: ${{ secrets.USERNAME }}
-      password: ${{ secrets.PASSWORD }}
-      JDBC: ${{ vars.JDBC_URL }}
-      CHECK_JDBC: ${{ vars.CHECK_JDBC }}
-      CHECK_USER: ${{ secrets.CHECK_USERNAME }}
-      CHECK_PASSWORD: ${{ secrets.CHECK_PASSWORD }}
-      displayName: 'Prod'
-      executeBuild: true
+        userName: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        JDBC: ${{ vars.JDBC_URL }}
+        CHECK_JDBC: ${{ vars.CHECK_JDBC }}
+        CHECK_USER: ${{ secrets.CHECK_USERNAME }}
+        CHECK_PASSWORD: ${{ secrets.CHECK_PASSWORD }}
+        displayName: 'Prod'
+        executeBuild: true
               
       # Steps represent a sequence of tasks that will be executed as part of the job
-      steps:
+    steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-      - name: Install Flyway
-        run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.10.0/flyway-commandline-10.10.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.10.0/flyway /usr/local/bin"
+          - uses: actions/checkout@v4
+          - name: Install Flyway
+            run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.10.0/flyway-commandline-10.10.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.10.0/flyway /usr/local/bin"
           
-      - name: Version
-        run: flyway -v -licenseKey="${{ env.FW_LICENSE }}"
+          - name: Version
+            run: flyway -v -licenseKey="${{ env.FW_LICENSE }}"
           
         #reports
-      - name: Check reports
-        run: |
-          flyway check -changes -drift -code -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFileName="testprod_report.html"
+          - name: Check reports
+            run: |
+              flyway check -changes -drift -code -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFileName="testprod_report.html"
           
         # Runs the Flyway Migrate command against the Test database
-      - name: Migrate Prod DB
-        run: |
-          flyway info migrate info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
+          - name: Migrate Prod DB
+            run: |
+              flyway info migrate info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
               
-      - name: Publish Report as Artifact
-        uses: actions/upload-artifact@v4
-        with: 
-        name: Check Report Prod
-        path: ${{ GITHUB.WORKSPACE }}/prodstage_report.html
+          - name: Publish Report as Artifact
+            uses: actions/upload-artifact@v4
+            with: 
+              name: Check Report Prod
+              path: ${{ GITHUB.WORKSPACE }}/prodstage_report.html
