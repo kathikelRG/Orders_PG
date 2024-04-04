@@ -86,7 +86,7 @@ jobs:
         JDBC: ${{ vars.JDBC_URL }}
         CHECK_JDBC: ${{ vars.CHECK_JDBC }}
         CHECK_USER: ${{ secrets.CHECK_USERNAME }}
-        CHECK_PASSWORD: ${{ secrets.CHECK_USERNAME }}
+        CHECK_PASSWORD: ${{ secrets.CHECK_PASSWORD }}
         displayName: 'Test'
         executeBuild: true
     
@@ -105,14 +105,15 @@ jobs:
         #reports
         - name: Check reports
           run: |
-            flyway check -changes -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.userName }}" -check.buildPassword="${{ env.password }}"
+            flyway check -changes -user="${{ env.userName }}" -password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}"
 
         # Runs the Flyway Migrate command against the Test database
         - name: Migrate Test DB
           run: |
             flyway info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
     
-  
+        - name: Save report to archive
+          run: ls ${{ GITHUB.WORKSPACE }}
 
 # # This workflow contains three jobs, build test and prod"
 #   prod:
