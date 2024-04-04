@@ -1,0 +1,26 @@
+view "public"."vwOrder" {
+  text = """-
+SELECT o."orderID",
+    o."customerID",
+    o."orderDate",
+    od."productID"
+   FROM (public."order" o
+     JOIN public."orderDetails" od ON ((o."orderID" = od."orderID")));
+"""
+  owner = postgres
+  columns = (
+    column "orderID" {
+      type = int2vector
+    }
+    column "customerID" {
+      type = int2vector
+    }
+    column "orderDate" {
+      type = date
+    }
+    column "productID" {
+      type = int2vector
+    }
+  )
+}
+
