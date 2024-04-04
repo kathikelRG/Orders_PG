@@ -11,6 +11,7 @@ env:
   #Repository Secret - Create this within the Projects Settings > Secrects > Actions section
   # Enable this for additional debug logging
   ACTIONS_RUNNER_DEBUG: true 
+  FW_LICENSE: ${{ secrets.LICENSE_KEY }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -73,36 +74,36 @@ jobs:
          path: ${{ GITHUB.WORKSPACE }}/Artifact_Files/
  
      # This workflow contains three jobs, build test and prod"
-#   test:
-#     name: Deploy test
-#     # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
-#     environment: 'test' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
-#     needs: build
-#     env:
-#         userName: ${{ secrets.USERNAME }}
-#         password: ${{ secrets.PASSWORD }}
-#         JDBC: ${{ vars.JDBC_URL }}
-#         displayName: 'Test'
-#         executeBuild: true
+  test:
+    name: Deploy test
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: 'test' #Ensure this environment name is setup in the projects Settings>Environment area. Ensuring any reviewers are also configured 
+    needs: build
+    env:
+        userName: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        JDBC: ${{ vars.JDBC_URL }}
+        displayName: 'Test'
+        executeBuild: true
     
-#     # Steps represent a sequence of tasks that will be executed as part of the job
-#     steps:
-#         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#         - uses: actions/checkout@v4
-#         - name: Install Flyway
-#           run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.10.0/flyway-commandline-10.10.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.10.0/flyway /usr/local/bin"
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v4
+        - name: Install Flyway
+          run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.10.0/flyway-commandline-10.10.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.10.0/flyway /usr/local/bin"
 
-#         #- name: show contents
-#         #  run: ls ${{ GITHUB.WORKSPACE }}
-#         - name: Version
-#           run: flyway -v
+        #- name: show contents
+        #  run: ls ${{ GITHUB.WORKSPACE }}
+        - name: Version
+          run: flyway -v
 
-#         # Runs the Flyway Migrate command against the Test database
-#         - name: Migrate Test DB
-#           if: env.executeBuild == 'true'
-#           run: |
-#             flyway -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" info migrate info -url="${{ env.JDBC }}" -cleanDisabled="false"
+        # Runs the Flyway Migrate command against the Test database
+        - name: Migrate Test DB
+          if: env.executeBuild == 'true'
+          run: |
+            flyway info -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" 
     
 # # This workflow contains three jobs, build test and prod"
 #   prod:
