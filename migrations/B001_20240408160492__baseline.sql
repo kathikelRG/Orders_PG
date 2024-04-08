@@ -54,4 +54,24 @@ CREATE TABLE public.customer (
 ALTER TABLE public.customer ADD CONSTRAINT customer_pkey PRIMARY KEY ("customerID");
 ALTER TABLE public.customer OWNER TO postgres;
 
+
+DO language plpgsql $$BEGIN RAISE NOTICE 'Creating public.campaign...';END$$;
+CREATE TABLE public.campaign (
+    "campaignID" int2vector NOT NULL,
+    "campaignName" character varying NOT NULL,
+    "campaignDesc" character varying
+);
+ALTER TABLE public.campaign ADD CONSTRAINT campaign_pkey PRIMARY KEY ("campaignID");
+ALTER TABLE public.campaign OWNER TO postgres;
+
+
+DO language plpgsql $$BEGIN RAISE NOTICE 'Creating public.vwOrder...';END$$;
+CREATE VIEW public."vwOrder" ("orderID", "customerID", "orderDate", "productID") AS SELECT o."orderID",
+    o."customerID",
+    o."orderDate",
+    od."productID"
+   FROM (public."order" o
+     JOIN public."orderDetails" od ON ((o."orderID" = od."orderID")));
+ALTER VIEW public."vwOrder" OWNER TO postgres;
+
 SET check_function_bodies = true;

@@ -2,7 +2,7 @@
 SET check_function_bodies = false;
 
 
-DO language plpgsql $$BEGIN RAISE NOTICE 'Dropping public.campaign...';END$$;
-DROP TABLE public.campaign;
+DO language plpgsql $$BEGIN RAISE NOTICE 'Dropping public.test...';END$$;
+DROP TABLE public.test;
 
 SET check_function_bodies = true;

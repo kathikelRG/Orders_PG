@@ -32,3 +32,13 @@ table "public"."orderDetails" {
   )
 }
 
+foreignKey "public"."orderDetails"."fk_orderOrderDetails" {
+  columns = [
+    "orderID"
+  ]
+  referencedTable = "public"."order"
+  referencedColumns = [
+    "orderID"
+  ]
+}
+
