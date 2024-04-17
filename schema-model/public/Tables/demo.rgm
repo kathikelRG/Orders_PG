@@ -1,0 +1,12 @@
+table "public"."demo" {
+  owner = postgres
+  columns = (
+    column "id" {
+      type = int2vector
+    }
+    column "description" {
+      type = date
+    }
+  )
+}
+
