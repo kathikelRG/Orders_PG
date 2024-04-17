@@ -1,0 +1,21 @@
+table "public"."purchaseOrders" {
+  primaryKey = {
+    columns = [
+      "purchaseOrderID"
+    ]
+    name = "purchaseOrders_pkey"
+    objectType = primaryKey
+  }
+  owner = postgres
+  columns = (
+    column "purchaseOrderID" {
+      type = int2vector
+      null = NOT NULL
+    }
+    column "customerID" {
+      type = int2vector
+      null = NOT NULL
+    }
+  )
+}
+
