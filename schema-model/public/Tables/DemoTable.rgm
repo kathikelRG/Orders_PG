@@ -1,0 +1,21 @@
+table "public"."DemoTable" {
+  primaryKey = {
+    columns = [
+      "DemoID"
+    ]
+    name = "DemoTable_pkey"
+    objectType = primaryKey
+  }
+  owner = postgres
+  columns = (
+    column "DemoID" {
+      type = int4range
+      null = NOT NULL
+    }
+    column "Description" {
+      type = "char"
+      null = NOT NULL
+    }
+  )
+}
+
