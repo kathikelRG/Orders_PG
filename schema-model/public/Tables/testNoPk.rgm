@@ -1,0 +1,9 @@
+table "public"."testNoPk" {
+  owner = postgres
+  columns = (
+    column "col" {
+      type = bigint
+    }
+  )
+}
+

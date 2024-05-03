@@ -1,9 +1,0 @@
-table "public"."test" {
-  owner = postgres
-  columns = (
-    column "col1" {
-      type = "char"
-    }
-  )
-}
-
