@@ -1,0 +1,9 @@
+table "public"."testingForFluff" {
+  owner = postgres
+  columns = (
+    column "test" {
+      type = "char"
+    }
+  )
+}
+
