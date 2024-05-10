@@ -43,7 +43,13 @@ jobs:
                        
       - name: Version
         run: flyway -v
+      - name: Remove SQLFluff
+        run: pip3 uninstall sqlfluff
 
+      - name: Remove PIP
+        run: pip3 uninstall pip
+
+        
       # Runs the Flyway Clean command against the Build database
       - name: Clean Build DB
         if: env.executeBuild == 'true'
