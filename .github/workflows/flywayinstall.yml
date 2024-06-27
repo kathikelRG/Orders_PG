@@ -1,1 +1,24 @@
 #test for flyway action
+name: deployToProduction_GitHub_Hosted
+ 
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+ 
+env: 
+  #Repository Secret - Create this within the Projects Settings > Secrects > Actions section
+  # Enable this for additional debug logging
+  ACTIONS_RUNNER_DEBUG: true 
+  FW_LICENSE: ${{ secrets.LICENSE_KEY }}
+jobs:
+  test1:
+    name: Test1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: kenmuse/setup-flyway@v1
+        with: 
+         edition: 'enterprise'
+                       
+      - name: Version
+        run: flyway -v 
