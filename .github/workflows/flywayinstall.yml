@@ -9,6 +9,7 @@ on:
 
 jobs:
   test1:
+   #installs the latest version of flyway and checks the version
     name: Test1
     runs-on: ubuntu-latest
     env: 
@@ -21,3 +22,18 @@ jobs:
                        
       - name: Version
         run: flyway -v -licenseKey="${{ env.license }}"
+  test2:
+    #installs a specific version of flyway and checks version
+    name: Test2
+    runs-on: ubuntu-latest
+    env: 
+     license: ${{ secrets.LICENSE_KEY }}
+    steps:
+    - uses: kenmuse/setup-flyway@v1
+      with: 
+         edition: 'enterprise'
+         version: 10.5.0
+                       
+    - name: Version
+      run: flyway -v -licenseKey="${{ env.license }}"
+  
