@@ -1,5 +1,5 @@
 #test for flyway action
-name: deployToProduction_GitHub_Hosted
+name: testFlywayInstall
  
 # Controls when the workflow will run
 on:
