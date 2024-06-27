@@ -36,4 +36,19 @@ jobs:
                        
     - name: Version
       run: flyway -v -licenseKey="${{ env.license }}"
+
+  test3:
+    #installs a specific version of flyway and checks version
+    name: Test3
+    runs-on: windows-latest
+    env: 
+     license: ${{ secrets.LICENSE_KEY }}
+    steps:
+    - uses: kenmuse/setup-flyway@v1
+      with: 
+         edition: 'enterprise'
+         version: 10.5.0
+                       
+    - name: Version
+      run: flyway -v -licenseKey="${{ env.license }}"
   
