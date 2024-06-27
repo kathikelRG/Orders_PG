@@ -21,4 +21,4 @@ jobs:
          edition: 'enterprise'
                        
       - name: Version
-        run: flyway -v 
+        run: flyway -v -licenseKey="${{ env.license }}"
