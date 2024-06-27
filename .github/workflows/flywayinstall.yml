@@ -15,6 +15,9 @@ jobs:
   test1:
     name: Test1
     runs-on: ubuntu-latest
+    env: 
+     license: ${{ secrets.FLYWAY_LICENSE_KEY }}
+     
     steps:
       - uses: kenmuse/setup-flyway@v1
         with: 
