@@ -1,0 +1,21 @@
+table "public"."testTableForFlywayPipeline" {
+  primaryKey = {
+    columns = [
+      "ID"
+    ]
+    name = "testTableForFlywayPipeline_pkey"
+    objectType = primaryKey
+  }
+  owner = postgres
+  columns = (
+    column "ID" {
+      type = int4range
+      null = NOT NULL
+    }
+    column "Description" {
+      type = character varying(30)
+      null = NOT NULL
+    }
+  )
+}
+
