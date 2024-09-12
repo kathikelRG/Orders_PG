@@ -12,8 +12,10 @@ env:
   # Enable this for additional debug logging
   ACTIONS_RUNNER_DEBUG: true 
   FW_LICENSE: ${{ secrets.LICENSE_KEY }}
-  email: ${{ secrets.FLYWAY_EMAIL }}
-  token: ${{ secrets.FLYWAY_TOKEN }}
+  #email: ${{ secrets.FLYWAY_EMAIL }}
+  #token: ${{ secrets.FLYWAY_TOKEN }}
+  email: 'kathi.kellenbeger@red-gate.com'
+  token: 'XOD21SebgSpDKUYSiP8qPYzPJuvnten28TPAApsMrgesUFUoTj9u6pyV+Y0clG1XYQXIV8HGfqcVq7cr0YHQ2Q=='
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
