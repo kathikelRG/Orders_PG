@@ -67,7 +67,7 @@ jobs:
         if: env.executeBuild == 'true'
 
         run: |
-         flyway info migrate info -publishResult=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations"  -url="${{ env.JDBC }}" -cleanDisabled="false"
+         flyway info migrate info -publishResult=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -environment="build" -environments.build.user=="${{ env.userName }}" -environments.build.password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations"  -environments.build.url="${{ env.JDBC }}" -cleanDisabled="false"
     
 
 
