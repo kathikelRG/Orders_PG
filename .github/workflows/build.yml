@@ -119,7 +119,7 @@ jobs:
         #reports
         - name: Check reports
           run: |
-            flyway check -changes -drift -code -publishResult=true -flywayServicePublish.publishReport=true -reportEnabled=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -environment=test -environments.test.user="${{ env.userName }}" -environments.test.password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -check.rulesLocation="${{ GITHUB.WORKSPACE }}/rules" -environments.test.url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFilename="teststage_report.html"
+            flyway check -changes -drift -code -publishResult=true -flywayServicePublish.publishReport=true -reportEnabled=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -environment=test -environments.test.user="${{ env.userName }}" -environments.test.password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -check.rulesLocation="${{ GITHUB.WORKSPACE }}/rules" -environments.test.url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFilename="teststage_report.html"
 
         # Runs the Flyway Migrate command against the Test database
         - name: Migrate Test DB
