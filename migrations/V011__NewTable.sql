@@ -1,5 +1,5 @@
 DO language plpgsql $$BEGIN RAISE NOTICE 'Creating public.shipper1...';END$$;
-CREATE TABLE public.shippe1r (
+CREATE TABLE public.shipper1 (
     "shipperID" int2vector NOT NULL,
     "shipperName" character varying NOT NULL
 );
