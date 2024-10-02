@@ -12,10 +12,7 @@ env:
   # Enable this for additional debug logging
   ACTIONS_RUNNER_DEBUG: true 
   FW_LICENSE: ${{ secrets.LICENSE_KEY }}
-  #email: ${{ secrets.FLYWAY_EMAIL }}
-  #token: ${{ secrets.FLYWAY_TOKEN }}
-  #EMAIL: 'kathi.kellenbeger@red-gate.com'
-  #TOKEN: 'XOD21SebgSpDKUYSiP8qPYzPJuvnten28TPAApsMrgesUFUoTj9u6pyV+Y0clG1XYQXIV8HGfqcVq7cr0YHQ2Q=='
+ 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -61,7 +58,7 @@ jobs:
       - name: Clean Build DB
         if: env.executeBuild == 'true'
         run: |
-         flyway info clean info -publishResult=true -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -cleanDisabled="false" 
+         flyway info clean info -publishResult=true -environment="build" -environment.build.user="${{ env.userName }}" -environment.build.password="${{ env.password }}" -baselineOnMigrate="true"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -environment.build.url="${{ env.JDBC }}" -cleanDisabled="false" 
         # Runs the Flyway Migrate command against the Build database
       - name: Migrate Build DB
         if: env.executeBuild == 'true'
