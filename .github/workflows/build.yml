@@ -124,7 +124,7 @@ jobs:
         # Runs the Flyway Migrate command against the Test database
         - name: Migrate Test DB
           run: |
-            flyway info migrate info -publishResult=true -flywayServicePublish.publishReport=true -reportEnabled=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
+            flyway info migrate info -publishResult=true -flywayServicePublish.publishReport=true -reportEnabled=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -environment=test -environments.test.user="${{ env.userName }}" -environments.test.password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -environments.test.url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
     
         #- name: Publish Report as Artifact
         #  uses: actions/upload-artifact@v4
