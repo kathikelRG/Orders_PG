@@ -119,18 +119,18 @@ jobs:
         #reports
         - name: Check reports
           run: |
-            flyway check -changes -drift -code -publishResult=true -flywayServicePublish.publishReport=true -reportEnabled=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -environment=test -environments.test.user="${{ env.userName }}" -environments.test.password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -check.rulesLocation="${{ GITHUB.WORKSPACE }}/rules" -environments.test.url="${{ env.JDBC }}" -check.buildUrl="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildUser="${{ env.CHECK_USER }}" -check.buildPassword="${{ env.CHECK_PASSWORD }}" -reportFilename="teststage_report.html"
+            flyway check -changes -drift -code -publishResult=true -flywayServicePublish.publishReport=true -reportEnabled=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -environment=test -environments.test.user="${{ env.userName }}" -environments.test.password="${{ env.password }}"  -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -check.rulesLocation="${{ GITHUB.WORKSPACE }}/rules" -environments.test.url="${{ env.JDBC }}"  -environments.check.url="${{ env.CHECK_JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}" -check.buildEnvironment=check -environments.check.user="${{ env.CHECK_USER }}" -environments.check.password="${{ env.CHECK_PASSWORD }}" #-reportFilename="teststage_report.html"
 
         # Runs the Flyway Migrate command against the Test database
         - name: Migrate Test DB
           run: |
             flyway info migrate info -publishResult=true -flywayServicePublish.publishReport=true -reportEnabled=true -email="${{ env.EMAIL }}" -token="${{ env.TOKEN }}" -user="${{ env.userName }}" -password="${{ env.password }}" -baselineOnMigrate="true"   -locations="filesystem:${{ GITHUB.WORKSPACE }}/migrations" -url="${{ env.JDBC }}" -licenseKey="${{ env.FW_LICENSE  }}"
     
-        - name: Publish Report as Artifact
-          uses: actions/upload-artifact@v4
-          with: 
-            name: Check Report
-            path: ${{ GITHUB.WORKSPACE }}/teststage_report.html
+        #- name: Publish Report as Artifact
+        #  uses: actions/upload-artifact@v4
+         # with: 
+        #    name: Check Report
+         #   path: ${{ GITHUB.WORKSPACE }}/teststage_report.html
 
   prod:
     name: Change Report Prod
