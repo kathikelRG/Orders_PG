@@ -42,12 +42,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
      
-      #- name: Install Flyway
-      #  run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.12.0/flyway-commandline-10.12.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.12.0/flyway /usr/local/bin"
+      - name: Install Flyway
+        run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.18.2/flyway-commandline-10.18.2-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.18.2/flyway /usr/local/bin"
 
-      - uses: kenmuse/setup-flyway@v1
-        with: 
-         edition: 'enterprise'
+      #- uses: kenmuse/setup-flyway@v1
+      #  with: 
+       #  edition: 'enterprise'
                        
       - name: Version
         run: flyway -v
@@ -109,7 +109,7 @@ jobs:
         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         - uses: actions/checkout@v4
         - name: Install Flyway
-          run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.12.0/flyway-commandline-10.12.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.12.0/flyway /usr/local/bin"
+          run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.18.2/flyway-commandline-10.18.2-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.18.2/flyway /usr/local/bin"
 
         #- name: show contents
         #  run: ls ${{ GITHUB.WORKSPACE }}
@@ -153,7 +153,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
           - uses: actions/checkout@v4
           - name: Install Flyway
-            run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.12.0/flyway-commandline-10.12.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.12.0/flyway /usr/local/bin"
+            run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.18.2/flyway-commandline-10.18.2-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.18.2/flyway /usr/local/bin"
           
           - name: Version
             run: flyway -v -licenseKey="${{ env.FW_LICENSE }}"
@@ -187,8 +187,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
         - uses: actions/checkout@v4
-        - name: Install Flyway
-          run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.12.0/flyway-commandline-10.12.0-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.12.0/flyway /usr/local/bin"
+        - name: Install 10.18.2/
+          run: "wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/10.18.2/flyway-commandline-10.18.2-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-10.18.2/flyway /usr/local/bin"
                       
         - name: Version
           run: flyway -v -licenseKey="${{ env.FW_LICENSE }}"
